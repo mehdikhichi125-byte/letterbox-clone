@@ -1,0 +1,122 @@
+/* Reset absolute positions, floats, and margins for flexbox alignment */
+
+/* 1. The navbar container */
+.site-navbar {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  flex-wrap: nowrap !important;
+  width: 100% !important;
+  min-height: 60px !important;
+  padding: 0 24px !important;
+  box-sizing: border-box !important;
+  position: relative !important;
+  float: none !important;
+  height: auto !important;
+  margin: 0 auto !important;
+  max-width: 100% !important;
+}
+
+/* Remove absolute positioning and floats from header children */
+#header section > * {
+  position: static !important;
+  float: none !important;
+  margin: 0 !important;
+}
+
+/* 2. Logo section */
+.navbar-logo {
+  flex-shrink: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+}
+.navbar-logo h1.site-logo {
+  position: static !important;
+  float: none !important;
+  margin: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+/* 3. Center Section (Nav links) */
+.navbar-links {
+  display: flex !important;
+  align-items: center !important;
+  gap: 24px !important;
+  flex-wrap: nowrap !important;
+  white-space: nowrap !important;
+  position: static !important;
+  float: none !important;
+  height: auto !important;
+  width: auto !important;
+  margin: 0 auto !important;
+}
+.navbar-links ul.navitems {
+  display: flex !important;
+  align-items: center !important;
+  gap: 24px !important;
+  flex-wrap: nowrap !important;
+  white-space: nowrap !important;
+  position: static !important;
+  float: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  list-style: none !important;
+}
+
+/* 4. Right Section (User profile, search, buttons) */
+.navbar-right {
+  flex-shrink: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 16px !important;
+  position: static !important;
+  float: none !important;
+  margin: 0 !important;
+  height: auto !important;
+  width: auto !important;
+}
+.navbar-right ul.navitems {
+  display: flex !important;
+  align-items: center !important;
+  gap: 16px !important;
+  flex-wrap: nowrap !important;
+  white-space: nowrap !important;
+  position: static !important;
+  float: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  list-style: none !important;
+}
+
+/* Log button container */
+.navbar-right .log-btn-wrapper {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+.navbar-right .log-btn-wrapper p {
+  margin: 0 !important;
+  padding: 0 !important;
+  float: none !important;
+  position: static !important;
+}
+.navbar-right #add-new-button {
+  position: static !important;
+  float: none !important;
+  margin: 0 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+.navbar-right .add-menu-wrapper {
+  position: relative !important;
+  float: none !important;
+  margin: 0 !important;
+  display: inline-flex !important;
+}
+.navbar-right .add-menu-wrapper #add-menu-button {
+  position: static !important;
+  float: none !important;
+  margin: 0 !important;
+}

@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Letterboxd — Create Account</title>
+    <link
+      rel="shortcut icon"
+      sizes="196x196"
+      href="/public/img/favicon.ico"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Martel+Sans:wght@400;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        background: #141414;
+        font-family: "Martel Sans", sans-serif;
+        color: #ffffff;
+        min-height: 100vh;
+      }
+
+      /* ── Navbar ── */
+      .nav-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 20px 40px;
+        background: rgba(0, 0, 0, 0.85);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      }
+      .logo {
+        font-size: 28px;
+        font-weight: 900;
+        color: #E50914;
+        text-decoration: none;
+        letter-spacing: 1px;
+      }
+      .nav-link {
+        color: #808080;
+        text-decoration: none;
+        font-size: 15px;
+        font-weight: 600;
+        transition: color 0.2s;
+      }
+      .nav-link:hover {
+        color: #ffffff;
+      }
+
+      /* ── Main container ── */
+      .auth-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: calc(100vh - 80px);
+        padding: 40px 20px;
+      }
+      .auth-card {
+        background: rgba(0, 0, 0, 0.75);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 8px;
+        padding: 60px 68px;
+        width: 100%;
+        max-width: 450px;
+        box-shadow: 0 8px 40px rgba(0, 0, 0, 0.6);
+      }
+      .auth-card h1 {
+        font-size: 32px;
+        font-weight: 700;
+        margin-bottom: 28px;
+        color: #ffffff;
+      }
+
+      /* ── Error / Success messages ── */
+      .error-msg {
+        background: rgba(229, 9, 20, 0.15);
+        border: 1px solid #E50914;
+        color: #E50914;
+        padding: 12px 16px;
+        border-radius: 6px;
+        font-size: 14px;
+        margin-bottom: 20px;
+      }
+
+      /* ── Form fields ── */
+      .form-group {
+        margin-bottom: 20px;
+      }
+      .form-group label {
+        display: block;
+        font-size: 14px;
+        font-weight: 600;
+        color: #808080;
+        margin-bottom: 8px;
+      }
+      .form-group input {
+        width: 100%;
+        padding: 14px 16px;
+        font-size: 16px;
+        border-radius: 6px;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        background: #333333;
+        color: #ffffff;
+        outline: none;
+        transition: border-color 0.2s;
+        font-family: "Martel Sans", sans-serif;
+      }
+      .form-group input:focus {
+        border-color: #E50914;
+      }
+      .form-group input::placeholder {
+        color: #808080;
+      }
+
+      /* ── Checkbox ── */
+      .checkbox-group {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        margin-bottom: 16px;
+      }
+      .checkbox-group input[type="checkbox"] {
+        margin-top: 3px;
+        accent-color: #E50914;
+        width: 16px;
+        height: 16px;
+        cursor: pointer;
+      }
+      .checkbox-group label {
+        font-size: 13px;
+        color: #808080;
+        line-height: 1.5;
+      }
+      .checkbox-group label a {
+        color: #E50914;
+        text-decoration: none;
+      }
+      .checkbox-group label a:hover {
+        text-decoration: underline;
+      }
+
+      /* ── Submit button ── */
+      .btn-submit {
+        width: 100%;
+        padding: 14px;
+        background: #E50914;
+        color: #ffffff;
+        border: none;
+        border-radius: 6px;
+        font-size: 16px;
+        font-weight: 700;
+        cursor: pointer;
+        margin-top: 8px;
+        transition: background 0.2s;
+        font-family: "Martel Sans", sans-serif;
+      }
+      .btn-submit:hover {
+        background: #B20710;
+      }
+
+      /* ── Footer link ── */
+      .auth-footer {
+        text-align: center;
+        margin-top: 24px;
+        font-size: 14px;
+        color: #808080;
+      }
+      .auth-footer a {
+        color: #E50914;
+        text-decoration: none;
+        font-weight: 600;
+      }
+      .auth-footer a:hover {
+        text-decoration: underline;
+      }
+      .field-error {
+        color: #E50914;
+        font-size: 12px;
+        margin-top: 6px;
+        min-height: 16px;
+        display: block;
+      }
+      .form-group input.input-error {
+        border-color: #E50914;
+      }
+      .form-group input.input-valid {
+        border-color: #2ecc71;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="nav-bar">
+      <a href="/" class="logo">LETTERBOXD</a>
+      <a href="/login" class="nav-link">Sign In</a>
+    </nav>
+
+    <!-- Signup Form -->
+    <div class="auth-container">
+      <div class="auth-card">
+        <h1>Create Account</h1>
+
+        <% if (typeof error !== 'undefined' && error) { %>
+          <div class="error-msg"><%= error %></div>
+        <% } %>
+
+        <form action="/signup" method="post" id="signup-form" novalidate>
+          <div class="form-group">
+            <label for="name">Full Name</label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              placeholder="Enter your full name"
+              required
+            />
+            <span class="field-error" id="error-name"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              placeholder="you@example.com"
+              required
+            />
+            <span class="field-error" id="error-email"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              placeholder="At least 8 characters"
+              minlength="8"
+              required
+            />
+            <span class="field-error" id="error-password"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="confirmPassword">Confirm Password</label>
+            <input
+              type="password"
+              id="confirmPassword"
+              name="confirmPassword"
+              placeholder="Re-enter your password"
+              minlength="8"
+              required
+            />
+            <span class="field-error" id="error-confirm"></span>
+          </div>
+
+          <div class="checkbox-group">
+            <input type="checkbox" id="terms" name="terms" required />
+            <label for="terms">
+              I'm at least 16 years old and accept the
+              <a href="#">Terms of Use</a> and
+              <a href="#">Privacy Policy</a>.
+            </label>
+          </div>
+
+          <button type="submit" class="btn-submit">Sign Up</button>
+        </form>
+
+        <p class="auth-footer">
+          Already have an account? <a href="/login">Sign in</a>
+        </p>
+      </div>
+    </div>
+
+    <!-- Client-side validation -->
+    <script>
+      const nameInput = document.getElementById('name');
+      const emailInput = document.getElementById('email');
+      const passwordInput = document.getElementById('password');
+      const confirmInput = document.getElementById('confirmPassword');
+
+      function setErr(id, input, msg) {
+        document.getElementById(id).textContent = msg;
+        input.classList.add('input-error');
+        input.classList.remove('input-valid');
+      }
+      function setOk(id, input) {
+        document.getElementById(id).textContent = '';
+        input.classList.remove('input-error');
+        input.classList.add('input-valid');
+      }
+
+      nameInput.addEventListener('input', function () {
+        const val = this.value.trim();
+        if (val === '') {
+          setErr('error-name', this, '');
+        } else if (!/^[a-zA-Z\s]+$/.test(val)) {
+          setErr('error-name', this, 'Name must contain letters only. Please enter your real full name.');
+        } else {
+          setOk('error-name', this);
+        }
+      });
+
+      emailInput.addEventListener('input', function () {
+        const val = this.value.trim();
+        if (val === '') {
+          setErr('error-email', this, '');
+        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)) {
+          setErr('error-email', this, 'Please enter a valid email address.');
+        } else {
+          setOk('error-email', this);
+        }
+      });
+
+      passwordInput.addEventListener('input', function () {
+        const val = this.value;
+        if (val.length > 0 && val.length < 8) {
+          setErr('error-password', this, 'Password must be at least 8 characters.');
+        } else if (val.length >= 8) {
+          setOk('error-password', this);
+        } else {
+          document.getElementById('error-password').textContent = '';
+          this.classList.remove('input-error', 'input-valid');
+        }
+        // Re-validate confirm
+        if (confirmInput.value.length > 0) {
+          confirmInput.dispatchEvent(new Event('input'));
+        }
+      });
+
+      confirmInput.addEventListener('input', function () {
+        const val = this.value;
+        if (val.length > 0 && val !== passwordInput.value) {
+          setErr('error-confirm', this, 'Passwords do not match.');
+        } else if (val.length > 0 && val === passwordInput.value) {
+          setOk('error-confirm', this);
+        } else {
+          document.getElementById('error-confirm').textContent = '';
+          this.classList.remove('input-error', 'input-valid');
+        }
+      });
+
+      document.getElementById('signup-form').addEventListener('submit', function (e) {
+        let hasError = false;
+        const name = nameInput.value.trim();
+        const email = emailInput.value.trim();
+        const pass = passwordInput.value;
+        const conf = confirmInput.value;
+
+        if (!name || !/^[a-zA-Z\s]+$/.test(name)) {
+          setErr('error-name', nameInput, name ? 'Name must contain letters only. Please enter your real full name.' : 'Full name is required.');
+          hasError = true;
+        }
+        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+          setErr('error-email', emailInput, 'Please enter a valid email address.');
+          hasError = true;
+        }
+        if (pass.length < 8) {
+          setErr('error-password', passwordInput, 'Password must be at least 8 characters.');
+          hasError = true;
+        }
+        if (pass !== conf) {
+          setErr('error-confirm', confirmInput, 'Passwords do not match.');
+          hasError = true;
+        }
+        if (hasError) e.preventDefault();
+      });
+    </script>
+  </body>
+</html>
+

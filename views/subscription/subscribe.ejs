@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Letterboxd — Choose Your Plan</title>
+    <link rel="shortcut icon" sizes="196x196" href="/public/img/favicon.ico" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Martel+Sans:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body {
+        background: #141414;
+        font-family: "Martel Sans", sans-serif;
+        color: #ffffff;
+        min-height: 100vh;
+      }
+
+      /* ── Navbar ── */
+      .nav-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 20px 40px;
+        background: rgba(0, 0, 0, 0.85);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      }
+      .logo {
+        font-size: 28px;
+        font-weight: 900;
+        color: #E50914;
+        text-decoration: none;
+        letter-spacing: 1px;
+      }
+      .nav-links { display: flex; align-items: center; gap: 24px; }
+      .nav-link {
+        color: #808080;
+        text-decoration: none;
+        font-size: 15px;
+        font-weight: 600;
+        transition: color 0.2s;
+      }
+      .nav-link:hover { color: #ffffff; }
+
+      /* ── Page Container ── */
+      .page-container {
+        max-width: 960px;
+        margin: 0 auto;
+        padding: 50px 20px 80px;
+      }
+      .page-title {
+        text-align: center;
+        font-size: 36px;
+        font-weight: 800;
+        margin-bottom: 8px;
+      }
+      .page-subtitle {
+        text-align: center;
+        color: #808080;
+        font-size: 16px;
+        margin-bottom: 48px;
+      }
+
+      /* ── Plan Cards ── */
+      .plans-row {
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+        margin-bottom: 48px;
+        flex-wrap: wrap;
+      }
+      .plan-card {
+        flex: 1;
+        min-width: 250px;
+        max-width: 300px;
+        background: rgba(255, 255, 255, 0.04);
+        border: 2px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        padding: 32px 24px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+      }
+      .plan-card:hover {
+        border-color: rgba(229, 9, 20, 0.4);
+        background: rgba(229, 9, 20, 0.05);
+        transform: translateY(-4px);
+      }
+      .plan-card.selected {
+        border-color: #E50914;
+        background: rgba(229, 9, 20, 0.1);
+        box-shadow: 0 0 30px rgba(229, 9, 20, 0.2);
+      }
+      .plan-card.selected::before {
+        content: "✓ SELECTED";
+        position: absolute;
+        top: 12px;
+        right: -28px;
+        background: #E50914;
+        color: #fff;
+        font-size: 10px;
+        font-weight: 800;
+        padding: 4px 32px;
+        transform: rotate(45deg);
+        letter-spacing: 0.5px;
+      }
+      .plan-name {
+        font-size: 22px;
+        font-weight: 800;
+        margin-bottom: 8px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+      .plan-price {
+        font-size: 40px;
+        font-weight: 900;
+        color: #E50914;
+        margin-bottom: 4px;
+      }
+      .plan-price span {
+        font-size: 16px;
+        font-weight: 600;
+        color: #808080;
+      }
+      .plan-features {
+        list-style: none;
+        margin-top: 20px;
+        text-align: left;
+      }
+      .plan-features li {
+        padding: 8px 0;
+        font-size: 14px;
+        color: #aaa;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .plan-features li::before {
+        content: "✓";
+        color: #E50914;
+        font-weight: 800;
+        font-size: 14px;
+      }
+
+      /* ── Payment Form ── */
+      .payment-section {
+        background: rgba(0, 0, 0, 0.6);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 12px;
+        padding: 40px;
+        max-width: 520px;
+        margin: 0 auto;
+      }
+      .payment-title {
+        font-size: 22px;
+        font-weight: 700;
+        margin-bottom: 28px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .payment-title .lock-icon {
+        font-size: 18px;
+        color: #E50914;
+      }
+      .form-row {
+        display: flex;
+        gap: 16px;
+      }
+      .form-group {
+        margin-bottom: 20px;
+        flex: 1;
+        position: relative;
+      }
+      .form-group label {
+        display: block;
+        font-size: 13px;
+        font-weight: 600;
+        color: #808080;
+        margin-bottom: 8px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+      .form-group input {
+        width: 100%;
+        padding: 14px 16px;
+        font-size: 16px;
+        border-radius: 6px;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        background: #333333;
+        color: #ffffff;
+        outline: none;
+        transition: border-color 0.2s;
+        font-family: "Martel Sans", sans-serif;
+      }
+      .form-group input:focus {
+        border-color: #E50914;
+      }
+      .form-group input::placeholder {
+        color: #666;
+      }
+      .form-group input.input-error {
+        border-color: #E50914;
+      }
+      .form-group input.input-valid {
+        border-color: #2ecc71;
+      }
+      .field-error {
+        color: #E50914;
+        font-size: 12px;
+        margin-top: 6px;
+        min-height: 16px;
+        display: block;
+        transition: opacity 0.2s;
+      }
+
+      /* ── Submit Button ── */
+      .btn-subscribe {
+        width: 100%;
+        padding: 16px;
+        background: #555;
+        color: #999;
+        border: none;
+        border-radius: 6px;
+        font-size: 17px;
+        font-weight: 700;
+        cursor: not-allowed;
+        margin-top: 8px;
+        transition: all 0.3s ease;
+        font-family: "Martel Sans", sans-serif;
+        letter-spacing: 0.5px;
+      }
+      .btn-subscribe.enabled {
+        background: #E50914;
+        color: #ffffff;
+        cursor: pointer;
+        box-shadow: 0 4px 20px rgba(229, 9, 20, 0.3);
+      }
+      .btn-subscribe.enabled:hover {
+        background: #B20710;
+        transform: translateY(-1px);
+        box-shadow: 0 6px 25px rgba(229, 9, 20, 0.4);
+      }
+
+      /* ── Loading Spinner ── */
+      .spinner {
+        display: none;
+        width: 24px;
+        height: 24px;
+        border: 3px solid rgba(255, 255, 255, 0.3);
+        border-top-color: #fff;
+        border-radius: 50%;
+        animation: spin 0.7s linear infinite;
+        margin: 0 auto;
+      }
+      @keyframes spin {
+        to { transform: rotate(360deg); }
+      }
+      .btn-subscribe.loading {
+        pointer-events: none;
+      }
+      .btn-subscribe.loading .btn-text { display: none; }
+      .btn-subscribe.loading .spinner { display: inline-block; }
+
+      /* ── Messages ── */
+      .success-msg {
+        background: rgba(46, 204, 113, 0.15);
+        border: 1px solid #2ecc71;
+        color: #2ecc71;
+        padding: 16px 20px;
+        border-radius: 8px;
+        font-size: 15px;
+        font-weight: 600;
+        text-align: center;
+        margin-top: 20px;
+        display: none;
+        animation: fadeIn 0.4s ease;
+      }
+      .server-error {
+        background: rgba(229, 9, 20, 0.15);
+        border: 1px solid #E50914;
+        color: #E50914;
+        padding: 12px 16px;
+        border-radius: 6px;
+        font-size: 14px;
+        margin-top: 16px;
+        display: none;
+        text-align: center;
+      }
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-10px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="nav-bar">
+      <a href="/" class="logo">LETTERBOXD</a>
+      <div class="nav-links">
+        <a href="/" class="nav-link">Home</a>
+        <a href="/films" class="nav-link">Films</a>
+        <a href="/profile" class="nav-link">Profile</a>
+        <a href="/logout" class="nav-link">Sign Out</a>
+      </div>
+    </nav>
+
+    <div class="page-container">
+      <h1 class="page-title">Choose Your Plan</h1>
+      <p class="page-subtitle">Unlock the full Birdbox experience. Cancel anytime.</p>
+
+      <!-- Plan Selection -->
+      <div class="plans-row">
+        <div class="plan-card" data-plan="basic" onclick="selectPlan('basic')">
+          <div class="plan-name">Basic</div>
+          <div class="plan-price">$8.99<span>/mo</span></div>
+          <ul class="plan-features">
+            <li>Watch on 1 device</li>
+            <li>720p HD streaming</li>
+            <li>Access to all movies</li>
+            <li>Limited downloads</li>
+          </ul>
+        </div>
+        <div class="plan-card selected" data-plan="standard" onclick="selectPlan('standard')">
+          <div class="plan-name">Standard</div>
+          <div class="plan-price">$13.99<span>/mo</span></div>
+          <ul class="plan-features">
+            <li>Watch on 2 devices</li>
+            <li>1080p Full HD</li>
+            <li>Access to all movies</li>
+            <li>Unlimited downloads</li>
+          </ul>
+        </div>
+        <div class="plan-card" data-plan="premium" onclick="selectPlan('premium')">
+          <div class="plan-name">Premium</div>
+          <div class="plan-price">$17.99<span>/mo</span></div>
+          <ul class="plan-features">
+            <li>Watch on 4 devices</li>
+            <li>4K Ultra HD + HDR</li>
+            <li>Access to all movies</li>
+            <li>Unlimited downloads</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Payment Form -->
+      <div class="payment-section">
+        <h2 class="payment-title">
+          <span class="lock-icon">🔒</span> Payment Details
+        </h2>
+
+        <form id="subscribe-form" novalidate>
+          <input type="hidden" id="selected-plan" name="plan" value="standard" />
+
+          <div class="form-group">
+            <label for="card-name">Cardholder Name</label>
+            <input type="text" id="card-name" placeholder="John Doe" autocomplete="cc-name" />
+            <span class="field-error" id="error-name"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="card-number">Card Number</label>
+            <input type="text" id="card-number" placeholder="1234 5678 9012 3456" maxlength="19" autocomplete="cc-number" />
+            <span class="field-error" id="error-number"></span>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="card-expiry">Expiry Date</label>
+              <input type="text" id="card-expiry" placeholder="MM/YY" maxlength="5" autocomplete="cc-exp" />
+              <span class="field-error" id="error-expiry"></span>
+            </div>
+            <div class="form-group">
+              <label for="card-cvv">CVV</label>
+              <input type="password" id="card-cvv" placeholder="•••" maxlength="3" autocomplete="cc-csc" />
+              <span class="field-error" id="error-cvv"></span>
+            </div>
+          </div>
+
+          <button type="submit" class="btn-subscribe" id="btn-subscribe" disabled>
+            <span class="btn-text">Subscribe Now</span>
+            <div class="spinner"></div>
+          </button>
+        </form>
+
+        <div class="success-msg" id="success-msg">
+          🎉 Subscription activated! Welcome to Birdbox.
+        </div>
+        <div class="server-error" id="server-error"></div>
+      </div>
+    </div>
+
+    <script>
+      // ════════════════════════════════════════════
+      //  PLAN SELECTION
+      // ════════════════════════════════════════════
+      let selectedPlan = 'standard';
+
+      function selectPlan(plan) {
+        selectedPlan = plan;
+        document.getElementById('selected-plan').value = plan;
+        document.querySelectorAll('.plan-card').forEach(card => {
+          card.classList.toggle('selected', card.dataset.plan === plan);
+        });
+      }
+
+      // ════════════════════════════════════════════
+      //  FIELD REFERENCES
+      // ════════════════════════════════════════════
+      const nameInput   = document.getElementById('card-name');
+      const numberInput = document.getElementById('card-number');
+      const expiryInput = document.getElementById('card-expiry');
+      const cvvInput    = document.getElementById('card-cvv');
+      const submitBtn   = document.getElementById('btn-subscribe');
+      const form        = document.getElementById('subscribe-form');
+
+      const errorName   = document.getElementById('error-name');
+      const errorNumber = document.getElementById('error-number');
+      const errorExpiry = document.getElementById('error-expiry');
+      const errorCvv    = document.getElementById('error-cvv');
+
+      const validity = { name: false, number: false, expiry: false, cvv: false };
+
+      // ════════════════════════════════════════════
+      //  VALIDATION HELPERS
+      // ════════════════════════════════════════════
+      function setError(el, inputEl, msg) {
+        el.textContent = msg;
+        inputEl.classList.add('input-error');
+        inputEl.classList.remove('input-valid');
+      }
+      function setValid(el, inputEl) {
+        el.textContent = '';
+        inputEl.classList.remove('input-error');
+        inputEl.classList.add('input-valid');
+      }
+      function clearField(el, inputEl) {
+        el.textContent = '';
+        inputEl.classList.remove('input-error', 'input-valid');
+      }
+
+      function checkSubmitButton() {
+        const allValid = validity.name && validity.number && validity.expiry && validity.cvv;
+        submitBtn.disabled = !allValid;
+        submitBtn.classList.toggle('enabled', allValid);
+      }
+
+      // ════════════════════════════════════════════
+      //  CARDHOLDER NAME VALIDATION
+      // ════════════════════════════════════════════
+      nameInput.addEventListener('input', function () {
+        const val = this.value.trim();
+        if (val === '') {
+          setError(errorName, this, 'Cardholder name is required.');
+          validity.name = false;
+        } else if (!/^[a-zA-Z\s]+$/.test(val)) {
+          setError(errorName, this, 'Name must contain letters only. Please enter your real name.');
+          validity.name = false;
+        } else {
+          setValid(errorName, this);
+          validity.name = true;
+        }
+        checkSubmitButton();
+      });
+
+      // ════════════════════════════════════════════
+      //  CARD NUMBER VALIDATION + AUTO-FORMAT
+      // ════════════════════════════════════════════
+      numberInput.addEventListener('input', function () {
+        let raw = this.value.replace(/\D/g, '');
+        if (raw.length > 16) raw = raw.substring(0, 16);
+
+        // Auto-format: 1234 5678 9012 3456
+        let formatted = '';
+        for (let i = 0; i < raw.length; i++) {
+          if (i > 0 && i % 4 === 0) formatted += ' ';
+          formatted += raw[i];
+        }
+        this.value = formatted;
+
+        // Validate
+        if (this.value.length > 0 && /[a-zA-Z]/.test(this.value)) {
+          setError(errorNumber, this, 'Card number must contain numbers only.');
+          validity.number = false;
+        } else if (raw.length > 0 && raw.length < 16) {
+          setError(errorNumber, this, 'Card number must be 16 digits.');
+          validity.number = false;
+        } else if (raw.length === 16) {
+          setValid(errorNumber, this);
+          validity.number = true;
+        } else {
+          clearField(errorNumber, this);
+          validity.number = false;
+        }
+        checkSubmitButton();
+      });
+
+      // ════════════════════════════════════════════
+      //  EXPIRY DATE VALIDATION + AUTO-FORMAT
+      // ════════════════════════════════════════════
+      expiryInput.addEventListener('input', function () {
+        let raw = this.value.replace(/\D/g, '');
+        if (raw.length > 4) raw = raw.substring(0, 4);
+
+        // Auto-insert /
+        if (raw.length >= 3) {
+          this.value = raw.substring(0, 2) + '/' + raw.substring(2);
+        } else {
+          this.value = raw;
+        }
+
+        if (raw.length === 0) {
+          setError(errorExpiry, this, 'Expiry date is required.');
+          validity.expiry = false;
+        } else if (raw.length >= 2) {
+          const month = parseInt(raw.substring(0, 2));
+          if (month === 0 || month > 12) {
+            setError(errorExpiry, this, 'Please enter a valid month (01-12).');
+            validity.expiry = false;
+          } else if (raw.length === 4) {
+            const year = parseInt('20' + raw.substring(2, 4));
+            // Current date: May 2026
+            const currentYear = 2026;
+            const currentMonth = 5;
+            if (year < currentYear || (year === currentYear && month < currentMonth)) {
+              setError(errorExpiry, this, 'Your card has expired. Please use a different card.');
+              validity.expiry = false;
+            } else {
+              setValid(errorExpiry, this);
+              validity.expiry = true;
+            }
+          } else {
+            clearField(errorExpiry, this);
+            validity.expiry = false;
+          }
+        } else {
+          clearField(errorExpiry, this);
+          validity.expiry = false;
+        }
+        checkSubmitButton();
+      });
+
+      // ════════════════════════════════════════════
+      //  CVV VALIDATION
+      // ════════════════════════════════════════════
+      cvvInput.addEventListener('input', function () {
+        let raw = this.value.replace(/\D/g, '');
+        if (raw.length > 3) raw = raw.substring(0, 3);
+        this.value = raw;
+
+        if (raw.length > 0 && raw.length < 3) {
+          setError(errorCvv, this, 'CVV must be 3 digits.');
+          validity.cvv = false;
+        } else if (raw.length === 3) {
+          setValid(errorCvv, this);
+          validity.cvv = true;
+        } else {
+          clearField(errorCvv, this);
+          validity.cvv = false;
+        }
+        checkSubmitButton();
+      });
+
+      // ════════════════════════════════════════════
+      //  FORM SUBMISSION
+      // ════════════════════════════════════════════
+      form.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        if (submitBtn.disabled) return;
+
+        // Show loading state
+        submitBtn.classList.add('loading');
+        document.getElementById('server-error').style.display = 'none';
+
+        // Simulate 1.5s processing
+        await new Promise(resolve => setTimeout(resolve, 1500));
+
+        try {
+          const res = await fetch('/subscribe', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ plan: selectedPlan }),
+          });
+          const data = await res.json();
+
+          submitBtn.classList.remove('loading');
+
+          if (data.success) {
+            document.getElementById('success-msg').style.display = 'block';
+            form.style.display = 'none';
+            // Redirect to home after 2 seconds
+            setTimeout(() => { window.location.href = '/'; }, 2000);
+          } else {
+            const errDiv = document.getElementById('server-error');
+            errDiv.textContent = 'Error: ' + (data.error || 'Something went wrong.');
+            errDiv.style.display = 'block';
+          }
+        } catch (err) {
+          submitBtn.classList.remove('loading');
+          const errDiv = document.getElementById('server-error');
+          errDiv.textContent = 'Error: Network error. Please try again.';
+          errDiv.style.display = 'block';
+        }
+      });
+    </script>
+  </body>
+</html>

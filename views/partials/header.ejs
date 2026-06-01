@@ -1,0 +1,201 @@
+<header class="site-header js-hide-in-app <%= (locals.searchOpen) ? '-searchopen' : '' %>" id="header">
+  <div class="site-header-bg"></div>
+  <section class="site-navbar">
+    
+    <!-- 1. The logo section (left side) -->
+    <div class="navbar-logo">
+      <h1 class="site-logo">
+        <a href="/" class="logo replace">Letterboxd — Your life in film</a>
+      </h1>
+    </div>
+
+    <!-- 2. The nav links section (center) -->
+    <nav class="main-nav navbar-links">
+      <ul class="navitems">
+        <li class="navitem films-page main-nav-films <%= (locals.activeTab === 'films') ? '-selected' : '' %>">
+          <a href="/films/" class="navlink has-icon"
+            ><span class="icon"></span
+            ><span class="label">Films</span></a
+          >
+        </li>
+        <li class="navitem lists-page main-nav-lists <%= (locals.activeTab === 'lists') ? '-selected' : '' %>">
+          <a href="/lists/" class="navlink has-icon"
+            ><span class="icon"></span
+            ><span class="label">Lists</span></a
+          >
+        </li>
+        <li class="navitem main-nav-people <%= (locals.activeTab === 'members') ? '-selected' : '' %>">
+          <a href="/members/" class="navlink has-icon"
+            ><span class="icon"></span
+            ><span class="label">Members</span></a
+          >
+        </li>
+        <li class="navitem main-nav-journal <%= (locals.activeTab === 'journal') ? '-selected' : '' %>">
+          <a href="/journal/" class="navlink has-icon"
+            ><span class="icon"></span
+            ><span class="label">Journal</span></a
+          >
+        </li>
+      </ul>
+    </nav>
+
+    <!-- 3. The right side (user profile, buttons, search) -->
+    <div class="navbar-right">
+      <ul class="navitems">
+        <% if (locals.user) { %>
+          <li
+            class="navitem nav-account js-nav-account"
+            style="position: relative;"
+            onclick="if (!event.target.closest('.subnav')) { event.preventDefault(); var subnav = this.querySelector('.subnav'); subnav.style.display = subnav.style.display === 'none' ? 'block' : 'none'; }"
+          >
+            <a href="#" class="has-icon toggle-menu"
+              ><span class="icon"></span
+              ><span class="avatar -a24" data-js-user-avatar="true"
+                ><img
+                  src="https://s.ltrbxd.com/static/img/avatar48.7a758b1e.png"
+                  alt="<%= user.username %>"
+                  width="24"
+                  height="24" /></span
+              ><%= user.username %></a
+            >
+            <ul class="subnav" style="display: none; position: absolute; background: #14181c; border-radius: 4px; box-shadow: 0 4px 12px rgba(0,0,0,0.5); padding: 5px 0; z-index: 9999; min-width: 140px; top: 100%; right: 0;">
+              <li style="border-bottom: 1px solid #2c3440; padding: 5px 15px; text-align: left;"><a href="/profile" style="color: #fff; display: block; text-decoration: none;">Profile</a></li>
+              <li style="border-bottom: 1px solid #2c3440; padding: 5px 15px; text-align: left;"><a href="/subscribe" style="color: #E50914; font-weight: bold; display: block; text-decoration: none;">Subscribe</a></li>
+              <li style="padding: 5px 15px; text-align: left;"><a href="/logout" style="color: #ff453a; font-weight: bold; display: block; text-decoration: none;">Sign Out</a></li>
+            </ul>
+          </li>
+
+        <% } else { %>
+          <li class="navitem sign-in-menu">
+            <a href="/sign-in/" class="navlink has-icon"
+              ><span class="icon"></span
+              ><span class="label">Sign In</span></a
+            >
+          </li>
+          <li class="navitem create-account-menu">
+            <a
+              href="/create-account/"
+              class="navlink has-icon cboxElement"
+              ><span class="icon"></span
+              ><span class="label">Create Account</span></a
+            >
+          </li>
+        <% } %>
+        <li class="navitem -search js-nav-search-toggle">
+          <a href="#" class="replace"></a>
+        </li>
+      </ul>
+
+
+    </div>
+
+    <!-- Hidden Sign-in and Search Forms -->
+    <form
+      method="post"
+      action="#"
+      id="signin"
+      class="signin signin-form js-header-signin-form js-signin -hidden"
+      data-url="/user/login.do"
+      data-recaptcha-action="signin"
+      novalidate="novalidate"
+      autocorrect="off"
+      autocapitalize="off"
+      style="opacity: 0; display: none"
+    >
+      <input type="hidden" name="__csrf" value="364ebf90f82119a76886" />
+      <fieldset class="fieldset">
+        <div class="fields">
+          <div class="col">
+            <label for="username">Username or Email</label>
+            <input
+              type="email"
+              name="username"
+              id="username"
+              class="field signin-field"
+              tabindex="1"
+              data-focus-control="signingIn"
+              autocomplete="email"
+              inputmode="email"
+              value=""
+            />
+          </div>
+          <div class="col">
+            <label for="password">Password</label>
+            <input
+              type="password"
+              name="password"
+              id="password"
+              class="field signin-field"
+              tabindex="2"
+              autocomplete="current-password"
+              value=""
+            />
+          </div>
+          <div class="signin-actions">
+            <label for="remember" class="option-label -checkbox -small">
+              <input
+                type="checkbox"
+                name="remember"
+                id="remember"
+                class="checkbox"
+                tabindex="3"
+                value="true"
+              /><i class="substitute"></i>
+              <span class="focus"
+                >Remember<span class="mob-hide"> me</span></span
+              >
+            </label>
+            <p class="reset" tabindex="5">
+              <a
+                class="reset-password-link"
+                href="/user/request-password-reset"
+                target="_top"
+                >Forgotten<span class="elongated"> password</span>?</a
+              >
+            </p>
+          </div>
+          <div class="col buttons">
+            <div class="button-container">
+              <input
+                type="submit"
+                value="Sign in"
+                class="button -action button-green"
+                tabindex="4"
+              /><i></i>
+            </div>
+            <div class="close js-close-signin">×</div>
+          </div>
+        </div>
+      </fieldset>
+      <div id="signin-message" class="errormessage"></div>
+    </form>
+
+    <form
+      id="search"
+      class="js-search-form search-form"
+      action="/search/"
+      method="get"
+      autocorrect="off"
+    >
+      <input
+        autocomplete="false"
+        name="hidden"
+        type="text"
+        style="display: none"
+      />
+      <fieldset>
+        <label for="search-q" class="hidden">Search:</label>
+        <input
+          type="text"
+          name="q"
+          id="search-q"
+          class="field -borderless"
+          data-lpignore="true"
+          inputmode="search"
+          value=""
+        />
+        <input type="submit" value="Search" class="action" />
+      </fieldset>
+    </form>
+  </section>
+</header>

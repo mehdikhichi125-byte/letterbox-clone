@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Letterboxd — My Profile</title>
+    <link
+      rel="shortcut icon"
+      sizes="196x196"
+      href="/public/img/favicon.ico"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Martel+Sans:wght@400;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        background: #141414;
+        font-family: "Martel Sans", sans-serif;
+        color: #ffffff;
+        min-height: 100vh;
+      }
+
+      /* ── Navbar ── */
+      .nav-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 20px 40px;
+        background: rgba(0, 0, 0, 0.85);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      }
+      .logo {
+        font-size: 28px;
+        font-weight: 900;
+        color: #E50914;
+        text-decoration: none;
+        letter-spacing: 1px;
+      }
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 24px;
+      }
+      .nav-link {
+        color: #808080;
+        text-decoration: none;
+        font-size: 15px;
+        font-weight: 600;
+        transition: color 0.2s;
+      }
+      .nav-link:hover {
+        color: #ffffff;
+      }
+      .nav-link.active {
+        color: #ffffff;
+      }
+
+      /* ── Profile Header ── */
+      .profile-header {
+        padding: 60px 40px 40px;
+        display: flex;
+        align-items: center;
+        gap: 30px;
+      }
+      .avatar {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #E50914, #B20710);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 42px;
+        font-weight: 800;
+        color: #ffffff;
+        flex-shrink: 0;
+      }
+      .profile-info h1 {
+        font-size: 32px;
+        font-weight: 700;
+        margin-bottom: 4px;
+      }
+      .profile-info .email {
+        color: #808080;
+        font-size: 15px;
+        margin-bottom: 12px;
+      }
+      .plan-badge {
+        display: inline-block;
+        padding: 6px 16px;
+        background: rgba(229, 9, 20, 0.15);
+        border: 1px solid #E50914;
+        border-radius: 20px;
+        color: #E50914;
+        font-size: 13px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      /* ── Section ── */
+      .section {
+        padding: 20px 40px 40px;
+      }
+      .section-title {
+        font-size: 22px;
+        font-weight: 700;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .section-title .icon {
+        color: #E50914;
+        font-size: 20px;
+      }
+
+      /* ── Movie row ── */
+      .movie-row {
+        display: flex;
+        gap: 16px;
+        overflow-x: auto;
+        padding-bottom: 16px;
+        scrollbar-width: thin;
+        scrollbar-color: #333 #141414;
+      }
+      .movie-row::-webkit-scrollbar {
+        height: 6px;
+      }
+      .movie-row::-webkit-scrollbar-track {
+        background: #141414;
+      }
+      .movie-row::-webkit-scrollbar-thumb {
+        background: #333;
+        border-radius: 3px;
+      }
+
+      /* ── Movie Card ── */
+      .movie-card {
+        flex-shrink: 0;
+        width: 160px;
+        cursor: pointer;
+        transition: transform 0.25s ease, box-shadow 0.25s ease;
+        position: relative;
+      }
+      .movie-card:hover {
+        transform: scale(1.08);
+        z-index: 2;
+      }
+      .movie-card img {
+        width: 100%;
+        height: 240px;
+        object-fit: cover;
+        border-radius: 6px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+      }
+      .movie-card .card-title {
+        margin-top: 8px;
+        font-size: 13px;
+        font-weight: 600;
+        color: #ccc;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .movie-card .card-year {
+        font-size: 12px;
+        color: #808080;
+      }
+      .movie-card .progress-bar {
+        position: absolute;
+        bottom: 46px;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: #333;
+        border-radius: 0 0 6px 6px;
+        overflow: hidden;
+      }
+      .movie-card .progress-bar .progress-fill {
+        height: 100%;
+        background: #E50914;
+        border-radius: 6px;
+      }
+
+      /* ── Empty state ── */
+      .empty-state {
+        color: #808080;
+        font-size: 15px;
+        padding: 30px 0;
+        text-align: center;
+        border: 1px dashed rgba(255, 255, 255, 0.1);
+        border-radius: 8px;
+      }
+      .empty-state a {
+        color: #E50914;
+        text-decoration: none;
+        font-weight: 600;
+      }
+      .empty-state a:hover {
+        text-decoration: underline;
+      }
+
+      /* ── Divider ── */
+      .divider {
+        border: none;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        margin: 0 40px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="nav-bar">
+      <a href="/" class="logo">LETTERBOXD</a>
+      <div class="nav-links">
+        <a href="/" class="nav-link">Home</a>
+        <a href="/films" class="nav-link">Films</a>
+        <a href="/profile" class="nav-link active">Profile</a>
+        <a href="/logout" class="nav-link">Sign Out</a>
+      </div>
+    </nav>
+
+    <!-- Profile Header -->
+    <div class="profile-header">
+      <div class="avatar"><%= user.name ? user.name.charAt(0).toUpperCase() : 'U' %></div>
+      <div class="profile-info">
+        <h1><%= user.name %></h1>
+        <p class="email"><%= user.email %></p>
+        <% if (subscription) { %>
+          <div style="display: flex; align-items: center; gap: 12px; margin-top: 10px;">
+            <span class="plan-badge"><%= subscription.plan_type %> Plan</span>
+            <a href="/subscribe" style="color: #E50914; font-size: 13px; font-weight: 700; text-decoration: none; border: 1px solid #E50914; border-radius: 4px; padding: 4px 10px; text-transform: uppercase;">Upgrade/Change</a>
+          </div>
+        <% } else { %>
+          <div style="display: flex; align-items: center; gap: 12px; margin-top: 10px;">
+            <span class="plan-badge">No Plan</span>
+            <a href="/subscribe" style="color: #2ecc71; font-size: 13px; font-weight: 700; text-decoration: none; border: 1px solid #2ecc71; border-radius: 4px; padding: 4px 10px; text-transform: uppercase;">Subscribe Now</a>
+          </div>
+        <% } %>
+      </div>
+    </div>
+
+    <hr class="divider" />
+
+    <!-- Continue Watching -->
+    <div class="section">
+      <h2 class="section-title">
+        <span class="icon">▶</span> Continue Watching
+      </h2>
+      <% if (continueWatching && continueWatching.length > 0) { %>
+        <div class="movie-row">
+          <% continueWatching.forEach(function(movie) { %>
+            <div class="movie-card">
+              <% if (movie.poster_url) { %>
+                <img src="<%= movie.poster_url %>" alt="<%= movie.title %>" />
+              <% } else { %>
+                <img src="https://via.placeholder.com/160x240/333/808080?text=No+Poster" alt="<%= movie.title %>" />
+              <% } %>
+              <% if (movie.progress_seconds > 0) { %>
+                <div class="progress-bar">
+                  <div class="progress-fill" style="width: <%= Math.min((movie.progress_seconds / 7200) * 100, 100) %>%"></div>
+                </div>
+              <% } %>
+              <p class="card-title"><%= movie.title %></p>
+              <p class="card-year"><%= movie.release_year || '' %></p>
+            </div>
+          <% }); %>
+        </div>
+      <% } else { %>
+        <div class="empty-state">
+          You haven't watched anything yet. <a href="/">Start exploring</a>
+        </div>
+      <% } %>
+    </div>
+
+    <hr class="divider" />
+
+    <!-- My Watchlist -->
+    <div class="section">
+      <h2 class="section-title">
+        <span class="icon">+</span> My Watchlist
+      </h2>
+      <% if (watchlist && watchlist.length > 0) { %>
+        <div class="movie-row">
+          <% watchlist.forEach(function(movie) { %>
+            <div class="movie-card">
+              <% if (movie.poster_url) { %>
+                <img src="<%= movie.poster_url %>" alt="<%= movie.title %>" />
+              <% } else { %>
+                <img src="https://via.placeholder.com/160x240/333/808080?text=No+Poster" alt="<%= movie.title %>" />
+              <% } %>
+              <p class="card-title"><%= movie.title %></p>
+              <p class="card-year"><%= movie.release_year || '' %></p>
+            </div>
+          <% }); %>
+        </div>
+      <% } else { %>
+        <div class="empty-state">
+          Your watchlist is empty. <a href="/">Browse movies</a> and click + to add.
+        </div>
+      <% } %>
+    </div>
+  </body>
+</html>

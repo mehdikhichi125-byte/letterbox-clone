@@ -1,0 +1,8 @@
+note.txt
+txt.txt
+/resources
+/node_modules
+.env
+/mysql-9.7.0-winx64/
+/node-v24.16.0-win-x64/
+.DS_Store
